@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- Support incoming connection without source node for AWS
+  ([Issue #5](https://github.com/cycloidio/inframap/issues/5))
+
 ### Fixed
 
 - Google graph generation from HCL
