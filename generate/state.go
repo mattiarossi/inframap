@@ -303,6 +303,7 @@ var reVariable = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^
 // read the actual direction of it and apply it and potentially changing the Edges
 // directions
 func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options) error {
+	imNodes := make(map[string][]string)
 	for _, n := range g.Nodes {
 		pv, rs, err := getProviderAndResource(n.Canonical, opt)
 		if err != nil {
@@ -311,7 +312,8 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 
 		if pv.IsEdge(rs) {
 			edges := g.GetEdgesForNode(n.ID)
-			ins, outs := pv.ResourceInOut(n.ID, rs, cfg)
+			ins, outs, nodes := pv.ResourceInOutNodes(n.ID, rs, cfg)
+			imNodes[n.ID] = nodes
 
 			// For the ins we have to check if any of the edges Target
 			// is this ID and reverse it because we want it to be the Source
@@ -370,6 +372,60 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 					} else if !isID && rep.Canonical == out {
 						g.InvertEdge(e.ID)
 					}
+				}
+			}
+
+		}
+	}
+
+	for id, nodes := range imNodes {
+		edges := g.GetEdgesForNode(id)
+		for _, e := range edges {
+			// We only want edges that have the
+			// current Node (that is Edge) as Target
+			if e.Target != id {
+				continue
+			}
+			for _, no := range nodes {
+				pv, _, err := getProviderAndResource(no, opt)
+				if err != nil {
+					return err
+				}
+
+				sn, err := g.GetNodeByID(e.Source)
+				if err != nil {
+					return err
+				}
+
+				// This way we have the name of the target so it's also unique
+				newCanonical := fmt.Sprintf("%s-%s", no, strings.Replace(sn.Canonical, ".", "__", 1))
+
+				res, err := pv.Resource(newCanonical)
+				if err != nil {
+					return err
+				}
+
+				newn := &graph.Node{
+					ID:        uuid.NewV4().String(),
+					Canonical: newCanonical,
+					TFID:      newCanonical,
+					Resource:  *res,
+				}
+
+				err = g.AddNode(newn)
+				if err != nil {
+					return err
+				}
+
+				cfg[newn.ID] = map[string]interface{}{}
+
+				err = g.AddEdge(&graph.Edge{
+					ID:     uuid.NewV4().String(),
+					Source: newn.ID,
+					Target: e.Source,
+				})
+				if err != nil {
+					return err
 				}
 			}
 		}

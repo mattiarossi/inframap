@@ -31,8 +31,24 @@ func TestFromState_AWS(t *testing.T) {
 				&graph.Node{
 					Canonical: "aws_db_instance.Cpbzf",
 				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:443-t:443-aws_lb__tQBgz",
+				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:80-t:80-aws_lb__tQBgz",
+				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:80-t:80-aws_lb__tQBgz",
+					Target:     "aws_lb.tQBgz",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:443-t:443-aws_lb__tQBgz",
+					Target:     "aws_lb.tQBgz",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.tQBgz",
 					Target:     "aws_launch_template.vIkyE",
@@ -72,8 +88,24 @@ func TestFromState_AWS(t *testing.T) {
 				&graph.Node{
 					Canonical: "aws_elasticache_cluster.VUhMF",
 				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:443-t:443-aws_elb__tMVdH",
+				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:80-t:80-aws_elb__tMVdH",
+				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:80-t:80-aws_elb__tMVdH",
+					Target:     "aws_elb.tMVdH",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:443-t:443-aws_elb__tMVdH",
+					Target:     "aws_elb.tMVdH",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_elb.tMVdH",
 					Target:     "aws_instance.TObJL",

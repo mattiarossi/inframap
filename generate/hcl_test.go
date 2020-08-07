@@ -20,6 +20,12 @@ func TestFromHCL_AWS(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:443-t:443-aws_lb__front",
+				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:80-t:80-aws_lb__front",
+				},
+				&graph.Node{
 					Canonical: "aws_lb.front",
 				},
 				&graph.Node{
@@ -33,6 +39,16 @@ func TestFromHCL_AWS(t *testing.T) {
 				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:443-t:443-aws_lb__front",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:80-t:80-aws_lb__front",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.front",
 					Target:     "aws_launch_template.front",
@@ -134,6 +150,12 @@ func TestFromHCL_Module(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:443-t:443-aws_lb__front",
+				},
+				&graph.Node{
+					Canonical: "inframap_outside.p:tcp-f:80-t:80-aws_lb__front",
+				},
+				&graph.Node{
 					Canonical: "aws_lb.front",
 				},
 				&graph.Node{
@@ -147,6 +169,16 @@ func TestFromHCL_Module(t *testing.T) {
 				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:443-t:443-aws_lb__front",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "inframap_outside.p:tcp-f:80-t:80-aws_lb__front",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.front",
 					Target:     "aws_launch_template.front",
