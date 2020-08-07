@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-const _TypeName = "rawawsflexibleengineopenstackgoogle"
+const _TypeName = "rawinframapawsflexibleengineopenstackgoogle"
 
-var _TypeIndex = [...]uint8{0, 3, 6, 20, 29, 35}
+var _TypeIndex = [...]uint8{0, 3, 11, 14, 28, 37, 43}
 
-const _TypeLowerName = "rawawsflexibleengineopenstackgoogle"
+const _TypeLowerName = "rawinframapawsflexibleengineopenstackgoogle"
 
 func (i Type) String() string {
 	if i < 0 || i >= Type(len(_TypeIndex)-1) {
@@ -24,33 +24,37 @@ func (i Type) String() string {
 func _TypeNoOp() {
 	var x [1]struct{}
 	_ = x[Raw-(0)]
-	_ = x[AWS-(1)]
-	_ = x[FlexibleEngine-(2)]
-	_ = x[OpenStack-(3)]
-	_ = x[Google-(4)]
+	_ = x[InfraMap-(1)]
+	_ = x[AWS-(2)]
+	_ = x[FlexibleEngine-(3)]
+	_ = x[OpenStack-(4)]
+	_ = x[Google-(5)]
 }
 
-var _TypeValues = []Type{Raw, AWS, FlexibleEngine, OpenStack, Google}
+var _TypeValues = []Type{Raw, InfraMap, AWS, FlexibleEngine, OpenStack, Google}
 
 var _TypeNameToValueMap = map[string]Type{
 	_TypeName[0:3]:        Raw,
 	_TypeLowerName[0:3]:   Raw,
-	_TypeName[3:6]:        AWS,
-	_TypeLowerName[3:6]:   AWS,
-	_TypeName[6:20]:       FlexibleEngine,
-	_TypeLowerName[6:20]:  FlexibleEngine,
-	_TypeName[20:29]:      OpenStack,
-	_TypeLowerName[20:29]: OpenStack,
-	_TypeName[29:35]:      Google,
-	_TypeLowerName[29:35]: Google,
+	_TypeName[3:11]:       InfraMap,
+	_TypeLowerName[3:11]:  InfraMap,
+	_TypeName[11:14]:      AWS,
+	_TypeLowerName[11:14]: AWS,
+	_TypeName[14:28]:      FlexibleEngine,
+	_TypeLowerName[14:28]: FlexibleEngine,
+	_TypeName[28:37]:      OpenStack,
+	_TypeLowerName[28:37]: OpenStack,
+	_TypeName[37:43]:      Google,
+	_TypeLowerName[37:43]: Google,
 }
 
 var _TypeNames = []string{
 	_TypeName[0:3],
-	_TypeName[3:6],
-	_TypeName[6:20],
-	_TypeName[20:29],
-	_TypeName[29:35],
+	_TypeName[3:11],
+	_TypeName[11:14],
+	_TypeName[14:28],
+	_TypeName[28:37],
+	_TypeName[37:43],
 }
 
 // TypeString retrieves an enum value from the enum constants string name.

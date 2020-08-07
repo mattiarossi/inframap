@@ -8,6 +8,7 @@ type Type int
 // List of all the Providers supported
 const (
 	Raw Type = iota
+	InfraMap
 	AWS
 	FlexibleEngine
 	OpenStack

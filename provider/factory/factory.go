@@ -10,11 +10,13 @@ import (
 	"github.com/cycloidio/inframap/provider/aws"
 	"github.com/cycloidio/inframap/provider/flexibleengine"
 	"github.com/cycloidio/inframap/provider/google"
+	"github.com/cycloidio/inframap/provider/inframap"
 	"github.com/cycloidio/inframap/provider/openstack"
 )
 
 var (
 	providers = map[provider.Type]provider.Provider{
+		provider.InfraMap:       inframap.Provider{},
 		provider.AWS:            aws.Provider{},
 		provider.FlexibleEngine: flexibleengine.Provider{},
 		provider.OpenStack:      openstack.Provider{},
