@@ -392,29 +392,28 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 					return err
 				}
 
-				sn, err := g.GetNodeByID(e.Source)
-				if err != nil {
-					return err
-				}
-
-				// This way we have the name of the target so it's also unique
-				newCanonical := fmt.Sprintf("%s-%s", no, strings.Replace(sn.Canonical, ".", "__", 1))
-
-				res, err := pv.Resource(newCanonical)
+				res, err := pv.Resource(no)
 				if err != nil {
 					return err
 				}
 
 				newn := &graph.Node{
 					ID:        uuid.NewV4().String(),
-					Canonical: newCanonical,
-					TFID:      newCanonical,
+					Canonical: no,
+					TFID:      no,
 					Resource:  *res,
 				}
 
 				err = g.AddNode(newn)
 				if err != nil {
-					return err
+					if !errors.Is(err, errcode.ErrGraphAlreadyExistsNode) {
+						return err
+					}
+
+					newn, err = g.GetNodeByCanonical(newn.Canonical)
+					if err != nil {
+						return fmt.Errorf("could not add Node because of: %w", err)
+					}
 				}
 
 				cfg[newn.ID] = map[string]interface{}{}
@@ -424,7 +423,7 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 					Source: newn.ID,
 					Target: e.Source,
 				})
-				if err != nil {
+				if err != nil && !errors.Is(err, errcode.ErrGraphAlreadyExistsEdge) {
 					return err
 				}
 			}
